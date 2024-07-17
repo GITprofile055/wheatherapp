@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device- 
+ width">
+  <title>Web application</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="card">
+    <div class="search">
+      <input type="text" placeholder="Enter the city name....." spellcheck="false">
+      <button ><img src="img/search.png"></button>
+    </div>
+    <div class="weather">
+      <img src="img/rain.png" />
+      <h1 class="temp"></h1>
+      <h2 class="city"></h2>
+      <div class="details">
+        <div class="col">
+          <img src="img/humidity.png">
+          <div>
+            <p class="humidity"></p>
+            <p>Humidity</p>
+          </div>
+        </div>
+        <div class="col">
+          <img src="img/wind.png">
+          <div>
+            <p class="wind"></p>
+            <p>wind</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const apiKey = "503c46edc207e0e97785dc3ca853c05f"; // Replace actual OpenWeatherMap API key
+    const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+    const sBox =document.querySelector(".search input");
+    const sBtn =document.querySelector(".search button");
+
+  
+    async function checkWeather(city) {
+      try {
+        const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        console.log(data); // For debugging purposes
+  
+        document.querySelector(".city").textContent = data.name;
+        document.querySelector(".temp").textContent = Math.round(data.main.temp) + " °C";
+        document.querySelector(".humidity").textContent = data.main.humidity + "%";
+        document.querySelector(".wind").textContent = data.wind.speed + " km/h";
+      } catch (error) {
+        console.error("Error:", error);
+        // Handle errors gracefully, e.g., display an error message to the user
+      }
+    }
+  
+  sBtn.addEventListener("click",()=>{
+    checkWeather(sBox.value);
+  });
+    
+  </script>
+
+
+</body>
+
+</html>
